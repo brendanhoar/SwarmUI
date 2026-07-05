@@ -981,6 +981,20 @@ function getGenInput(input_overrides = {}, input_preoverrides = {}) {
 }
 
 function refreshParameterValues(strong = true, refreshType = null, callback = null) {
+    // 1. Show the dialog
+    if (callback === null) {
+        isConfirmed = confirm("Do you want to proceed with parameter refresh?");
+    }
+    else {
+        isConfirmed = confirm("Do you want to proceed with parameter refresh? Note that callback is not null.");
+    }
+    // 2. Return from the function if the user clicks 'No' (Cancel)
+    if (!isConfirmed) {
+      console.log("Parameter action canceled.");
+      return; // Exits the function here
+    }
+    // 3. Continue if the user clicks 'Yes' (OK)
+    console.log("Action confirmed! Proceeding...");
     genericRequest('TriggerRefresh', {strong: strong, refreshType: refreshType}, data => {
         loadUserData();
         if (!gen_param_types) {
